@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>행사 참가비 계산기</title>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; padding: 20px; background-color: #f4f4f4; }
+        .container { max-width: 500px; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h2 { border-bottom: 2px solid #333; padding-bottom: 10px; }
+        .option-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        select, input { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px; }
+        .total-box { background: #e7f3ff; padding: 15px; border-radius: 5px; text-align: center; font-size: 1.2em; }
+        #totalPrice { color: #007bff; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>행사 비용 계산기</h2>
+
+    <!-- 기본 참가비 (고정값일 경우 안내만) -->
+    <p>기본 참가비: <strong>50,000원</strong></p>
+
+    <!-- 관광 일정 선택 (체크박스 형태) -->
+    <div class="option-group">
+        <label>추가 관광 선택</label>
+        <input type="checkbox" class="tour" value="30000" onchange="calculate()"> 사전 관광 (+30,000원)<br>
+        <input type="checkbox" class="tour" value="40000" onchange="calculate()"> 사후 관광 (+40,000원)
+    </div>
+
+    <!-- 숙소 옵션 선택 (드롭다운 형태) -->
+    <div class="option-group">
+        <label for="room">숙소 옵션 선택</label>
+        <select id="room" onchange="calculate()">
+            <option value="0">선택 안함 (0원)</option>
+            <option value="50000">스탠다드 룸 (+50,000원)</option>
+            <option value="100000">디럭스 룸 (+100,000원)</option>
+        </select>
+    </div>
+
+    <div class="total-box">
+        최종 예상 참가비: <span id="totalPrice">50,000</span>원
+    </div>
+</div>
+
+<script>
+    function calculate() {
+        // 1. 기본가 설정
+        let total = 50000;
+
+        // 2. 관광 옵션 계산 (체크박스 루프)
+        const tours = document.querySelectorAll('.tour');
+        tours.forEach(tour => {
+            if (tour.checked) {
+                total += parseInt(tour.value);
+            }
+        });
+
+        // 3. 숙소 옵션 계산 (셀렉트 박스)
+        const roomPrice = document.getElementById('room').value;
+        total += parseInt(roomPrice);
+
+        // 4. 결과 출력 (천단위 콤마 추가)
+        document.getElementById('totalPrice').innerText = total.toLocaleString();
+    }
+</script>
+
+</body>
+</html>
